@@ -271,7 +271,7 @@ func main() {
 			Publisher:  eventPublisherDriver,
 			Logger:     logger,
 
-			DLQ: conf.NotificationService.Consumer.DLQ,
+			Config: conf.NotificationService.Consumer,
 		},
 		Marshaler: eventPublisher.Marshaler(),
 
