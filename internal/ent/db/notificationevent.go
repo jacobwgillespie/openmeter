@@ -29,6 +29,8 @@ type NotificationEvent struct {
 	RuleID string `json:"rule_id,omitempty"`
 	// Payload holds the value of the "payload" field.
 	Payload string `json:"payload,omitempty"`
+	// HandlerDeduplicationHash holds the value of the "handler_deduplication_hash" field.
+	HandlerDeduplicationHash string `json:"handler_deduplication_hash,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the NotificationEventQuery when eager-loading is set.
 	Edges        NotificationEventEdges `json:"edges"`
@@ -71,7 +73,7 @@ func (*NotificationEvent) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case notificationevent.FieldID, notificationevent.FieldNamespace, notificationevent.FieldType, notificationevent.FieldRuleID, notificationevent.FieldPayload:
+		case notificationevent.FieldID, notificationevent.FieldNamespace, notificationevent.FieldType, notificationevent.FieldRuleID, notificationevent.FieldPayload, notificationevent.FieldHandlerDeduplicationHash:
 			values[i] = new(sql.NullString)
 		case notificationevent.FieldCreatedAt:
 			values[i] = new(sql.NullTime)
@@ -125,6 +127,12 @@ func (ne *NotificationEvent) assignValues(columns []string, values []any) error 
 				return fmt.Errorf("unexpected type %T for field payload", values[i])
 			} else if value.Valid {
 				ne.Payload = value.String
+			}
+		case notificationevent.FieldHandlerDeduplicationHash:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field handler_deduplication_hash", values[i])
+			} else if value.Valid {
+				ne.HandlerDeduplicationHash = value.String
 			}
 		default:
 			ne.selectValues.Set(columns[i], values[i])
@@ -186,6 +194,9 @@ func (ne *NotificationEvent) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("payload=")
 	builder.WriteString(ne.Payload)
+	builder.WriteString(", ")
+	builder.WriteString("handler_deduplication_hash=")
+	builder.WriteString(ne.HandlerDeduplicationHash)
 	builder.WriteByte(')')
 	return builder.String()
 }

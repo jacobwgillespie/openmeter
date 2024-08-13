@@ -246,6 +246,7 @@ var (
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "type", Type: field.TypeEnum, Enums: []string{"entitlements.balance.threshold"}},
 		{Name: "payload", Type: field.TypeString, SchemaType: map[string]string{"postgres": "jsonb"}},
+		{Name: "handler_deduplication_hash", Type: field.TypeString, Nullable: true, SchemaType: map[string]string{"postgres": "varchar(140)"}},
 		{Name: "rule_id", Type: field.TypeString, SchemaType: map[string]string{"postgres": "char(26)"}},
 	}
 	// NotificationEventsTable holds the schema information for the "notification_events" table.
@@ -256,7 +257,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "notification_events_notification_rules_events",
-				Columns:    []*schema.Column{NotificationEventsColumns[5]},
+				Columns:    []*schema.Column{NotificationEventsColumns[6]},
 				RefColumns: []*schema.Column{NotificationRulesColumns[0]},
 				OnDelete:   schema.NoAction,
 			},
@@ -276,6 +277,11 @@ var (
 				Name:    "notificationevent_namespace_type",
 				Unique:  false,
 				Columns: []*schema.Column{NotificationEventsColumns[1], NotificationEventsColumns[3]},
+			},
+			{
+				Name:    "notificationevent_namespace_handler_deduplication_hash_created_at",
+				Unique:  false,
+				Columns: []*schema.Column{NotificationEventsColumns[1], NotificationEventsColumns[5], NotificationEventsColumns[2]},
 			},
 		},
 	}

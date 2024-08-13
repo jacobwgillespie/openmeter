@@ -26,6 +26,8 @@ const (
 	FieldRuleID = "rule_id"
 	// FieldPayload holds the string denoting the payload field in the database.
 	FieldPayload = "payload"
+	// FieldHandlerDeduplicationHash holds the string denoting the handler_deduplication_hash field in the database.
+	FieldHandlerDeduplicationHash = "handler_deduplication_hash"
 	// EdgeDeliveryStatuses holds the string denoting the delivery_statuses edge name in mutations.
 	EdgeDeliveryStatuses = "delivery_statuses"
 	// EdgeRules holds the string denoting the rules edge name in mutations.
@@ -54,6 +56,7 @@ var Columns = []string{
 	FieldType,
 	FieldRuleID,
 	FieldPayload,
+	FieldHandlerDeduplicationHash,
 }
 
 var (
@@ -122,6 +125,11 @@ func ByRuleID(opts ...sql.OrderTermOption) OrderOption {
 // ByPayload orders the results by the payload field.
 func ByPayload(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPayload, opts...).ToFunc()
+}
+
+// ByHandlerDeduplicationHash orders the results by the handler_deduplication_hash field.
+func ByHandlerDeduplicationHash(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldHandlerDeduplicationHash, opts...).ToFunc()
 }
 
 // ByDeliveryStatusesCount orders the results by delivery_statuses count.

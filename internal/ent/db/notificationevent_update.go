@@ -42,6 +42,26 @@ func (neu *NotificationEventUpdate) SetNillablePayload(s *string) *NotificationE
 	return neu
 }
 
+// SetHandlerDeduplicationHash sets the "handler_deduplication_hash" field.
+func (neu *NotificationEventUpdate) SetHandlerDeduplicationHash(s string) *NotificationEventUpdate {
+	neu.mutation.SetHandlerDeduplicationHash(s)
+	return neu
+}
+
+// SetNillableHandlerDeduplicationHash sets the "handler_deduplication_hash" field if the given value is not nil.
+func (neu *NotificationEventUpdate) SetNillableHandlerDeduplicationHash(s *string) *NotificationEventUpdate {
+	if s != nil {
+		neu.SetHandlerDeduplicationHash(*s)
+	}
+	return neu
+}
+
+// ClearHandlerDeduplicationHash clears the value of the "handler_deduplication_hash" field.
+func (neu *NotificationEventUpdate) ClearHandlerDeduplicationHash() *NotificationEventUpdate {
+	neu.mutation.ClearHandlerDeduplicationHash()
+	return neu
+}
+
 // AddDeliveryStatusIDs adds the "delivery_statuses" edge to the NotificationEventDeliveryStatus entity by IDs.
 func (neu *NotificationEventUpdate) AddDeliveryStatusIDs(ids ...string) *NotificationEventUpdate {
 	neu.mutation.AddDeliveryStatusIDs(ids...)
@@ -133,6 +153,12 @@ func (neu *NotificationEventUpdate) sqlSave(ctx context.Context) (n int, err err
 	if value, ok := neu.mutation.Payload(); ok {
 		_spec.SetField(notificationevent.FieldPayload, field.TypeString, value)
 	}
+	if value, ok := neu.mutation.HandlerDeduplicationHash(); ok {
+		_spec.SetField(notificationevent.FieldHandlerDeduplicationHash, field.TypeString, value)
+	}
+	if neu.mutation.HandlerDeduplicationHashCleared() {
+		_spec.ClearField(notificationevent.FieldHandlerDeduplicationHash, field.TypeString)
+	}
 	if neu.mutation.DeliveryStatusesCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
@@ -209,6 +235,26 @@ func (neuo *NotificationEventUpdateOne) SetNillablePayload(s *string) *Notificat
 	if s != nil {
 		neuo.SetPayload(*s)
 	}
+	return neuo
+}
+
+// SetHandlerDeduplicationHash sets the "handler_deduplication_hash" field.
+func (neuo *NotificationEventUpdateOne) SetHandlerDeduplicationHash(s string) *NotificationEventUpdateOne {
+	neuo.mutation.SetHandlerDeduplicationHash(s)
+	return neuo
+}
+
+// SetNillableHandlerDeduplicationHash sets the "handler_deduplication_hash" field if the given value is not nil.
+func (neuo *NotificationEventUpdateOne) SetNillableHandlerDeduplicationHash(s *string) *NotificationEventUpdateOne {
+	if s != nil {
+		neuo.SetHandlerDeduplicationHash(*s)
+	}
+	return neuo
+}
+
+// ClearHandlerDeduplicationHash clears the value of the "handler_deduplication_hash" field.
+func (neuo *NotificationEventUpdateOne) ClearHandlerDeduplicationHash() *NotificationEventUpdateOne {
+	neuo.mutation.ClearHandlerDeduplicationHash()
 	return neuo
 }
 
@@ -332,6 +378,12 @@ func (neuo *NotificationEventUpdateOne) sqlSave(ctx context.Context) (_node *Not
 	}
 	if value, ok := neuo.mutation.Payload(); ok {
 		_spec.SetField(notificationevent.FieldPayload, field.TypeString, value)
+	}
+	if value, ok := neuo.mutation.HandlerDeduplicationHash(); ok {
+		_spec.SetField(notificationevent.FieldHandlerDeduplicationHash, field.TypeString, value)
+	}
+	if neuo.mutation.HandlerDeduplicationHashCleared() {
+		_spec.ClearField(notificationevent.FieldHandlerDeduplicationHash, field.TypeString)
 	}
 	if neuo.mutation.DeliveryStatusesCleared() {
 		edge := &sqlgraph.EdgeSpec{

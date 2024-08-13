@@ -102,12 +102,13 @@ func EventFromDBEntity(e db.NotificationEvent) (*notification.Event, error) {
 		NamespacedModel: models.NamespacedModel{
 			Namespace: e.Namespace,
 		},
-		ID:             e.ID,
-		Type:           e.Type,
-		CreatedAt:      e.CreatedAt,
-		Payload:        payload,
-		Rule:           *rule,
-		DeliveryStatus: statuses,
+		ID:                       e.ID,
+		Type:                     e.Type,
+		CreatedAt:                e.CreatedAt,
+		Payload:                  payload,
+		Rule:                     *rule,
+		DeliveryStatus:           statuses,
+		HandlerDeduplicationHash: e.HandlerDeduplicationHash,
 	}, nil
 }
 

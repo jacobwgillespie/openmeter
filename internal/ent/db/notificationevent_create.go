@@ -64,6 +64,20 @@ func (nec *NotificationEventCreate) SetPayload(s string) *NotificationEventCreat
 	return nec
 }
 
+// SetHandlerDeduplicationHash sets the "handler_deduplication_hash" field.
+func (nec *NotificationEventCreate) SetHandlerDeduplicationHash(s string) *NotificationEventCreate {
+	nec.mutation.SetHandlerDeduplicationHash(s)
+	return nec
+}
+
+// SetNillableHandlerDeduplicationHash sets the "handler_deduplication_hash" field if the given value is not nil.
+func (nec *NotificationEventCreate) SetNillableHandlerDeduplicationHash(s *string) *NotificationEventCreate {
+	if s != nil {
+		nec.SetHandlerDeduplicationHash(*s)
+	}
+	return nec
+}
+
 // SetID sets the "id" field.
 func (nec *NotificationEventCreate) SetID(s string) *NotificationEventCreate {
 	nec.mutation.SetID(s)
@@ -231,6 +245,10 @@ func (nec *NotificationEventCreate) createSpec() (*NotificationEvent, *sqlgraph.
 		_spec.SetField(notificationevent.FieldPayload, field.TypeString, value)
 		_node.Payload = value
 	}
+	if value, ok := nec.mutation.HandlerDeduplicationHash(); ok {
+		_spec.SetField(notificationevent.FieldHandlerDeduplicationHash, field.TypeString, value)
+		_node.HandlerDeduplicationHash = value
+	}
 	if nodes := nec.mutation.DeliveryStatusesIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
@@ -328,6 +346,24 @@ func (u *NotificationEventUpsert) UpdatePayload() *NotificationEventUpsert {
 	return u
 }
 
+// SetHandlerDeduplicationHash sets the "handler_deduplication_hash" field.
+func (u *NotificationEventUpsert) SetHandlerDeduplicationHash(v string) *NotificationEventUpsert {
+	u.Set(notificationevent.FieldHandlerDeduplicationHash, v)
+	return u
+}
+
+// UpdateHandlerDeduplicationHash sets the "handler_deduplication_hash" field to the value that was provided on create.
+func (u *NotificationEventUpsert) UpdateHandlerDeduplicationHash() *NotificationEventUpsert {
+	u.SetExcluded(notificationevent.FieldHandlerDeduplicationHash)
+	return u
+}
+
+// ClearHandlerDeduplicationHash clears the value of the "handler_deduplication_hash" field.
+func (u *NotificationEventUpsert) ClearHandlerDeduplicationHash() *NotificationEventUpsert {
+	u.SetNull(notificationevent.FieldHandlerDeduplicationHash)
+	return u
+}
+
 // UpdateNewValues updates the mutable fields using the new values that were set on create except the ID field.
 // Using this option is equivalent to using:
 //
@@ -399,6 +435,27 @@ func (u *NotificationEventUpsertOne) SetPayload(v string) *NotificationEventUpse
 func (u *NotificationEventUpsertOne) UpdatePayload() *NotificationEventUpsertOne {
 	return u.Update(func(s *NotificationEventUpsert) {
 		s.UpdatePayload()
+	})
+}
+
+// SetHandlerDeduplicationHash sets the "handler_deduplication_hash" field.
+func (u *NotificationEventUpsertOne) SetHandlerDeduplicationHash(v string) *NotificationEventUpsertOne {
+	return u.Update(func(s *NotificationEventUpsert) {
+		s.SetHandlerDeduplicationHash(v)
+	})
+}
+
+// UpdateHandlerDeduplicationHash sets the "handler_deduplication_hash" field to the value that was provided on create.
+func (u *NotificationEventUpsertOne) UpdateHandlerDeduplicationHash() *NotificationEventUpsertOne {
+	return u.Update(func(s *NotificationEventUpsert) {
+		s.UpdateHandlerDeduplicationHash()
+	})
+}
+
+// ClearHandlerDeduplicationHash clears the value of the "handler_deduplication_hash" field.
+func (u *NotificationEventUpsertOne) ClearHandlerDeduplicationHash() *NotificationEventUpsertOne {
+	return u.Update(func(s *NotificationEventUpsert) {
+		s.ClearHandlerDeduplicationHash()
 	})
 }
 
@@ -640,6 +697,27 @@ func (u *NotificationEventUpsertBulk) SetPayload(v string) *NotificationEventUps
 func (u *NotificationEventUpsertBulk) UpdatePayload() *NotificationEventUpsertBulk {
 	return u.Update(func(s *NotificationEventUpsert) {
 		s.UpdatePayload()
+	})
+}
+
+// SetHandlerDeduplicationHash sets the "handler_deduplication_hash" field.
+func (u *NotificationEventUpsertBulk) SetHandlerDeduplicationHash(v string) *NotificationEventUpsertBulk {
+	return u.Update(func(s *NotificationEventUpsert) {
+		s.SetHandlerDeduplicationHash(v)
+	})
+}
+
+// UpdateHandlerDeduplicationHash sets the "handler_deduplication_hash" field to the value that was provided on create.
+func (u *NotificationEventUpsertBulk) UpdateHandlerDeduplicationHash() *NotificationEventUpsertBulk {
+	return u.Update(func(s *NotificationEventUpsert) {
+		s.UpdateHandlerDeduplicationHash()
+	})
+}
+
+// ClearHandlerDeduplicationHash clears the value of the "handler_deduplication_hash" field.
+func (u *NotificationEventUpsertBulk) ClearHandlerDeduplicationHash() *NotificationEventUpsertBulk {
+	return u.Update(func(s *NotificationEventUpsert) {
+		s.ClearHandlerDeduplicationHash()
 	})
 }
 

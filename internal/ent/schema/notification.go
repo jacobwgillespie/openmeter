@@ -138,6 +138,11 @@ func (NotificationEvent) Fields() []ent.Field {
 			SchemaType(map[string]string{
 				dialect.Postgres: "jsonb",
 			}),
+		field.String("handler_deduplication_hash").
+			Optional().
+			SchemaType(map[string]string{
+				dialect.Postgres: "varchar(140)", // fits sha512 (128) and a type field if needed
+			}),
 	}
 }
 
@@ -158,6 +163,8 @@ func (NotificationEvent) Indexes() []ent.Index {
 	return []ent.Index{
 		index.Fields("namespace", "id"),
 		index.Fields("namespace", "type"),
+		// used by the deduplication mechanism in notification handler
+		index.Fields("namespace", "handler_deduplication_hash", "created_at"),
 	}
 }
 

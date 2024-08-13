@@ -86,6 +86,11 @@ func Payload(v string) predicate.NotificationEvent {
 	return predicate.NotificationEvent(sql.FieldEQ(FieldPayload, v))
 }
 
+// HandlerDeduplicationHash applies equality check predicate on the "handler_deduplication_hash" field. It's identical to HandlerDeduplicationHashEQ.
+func HandlerDeduplicationHash(v string) predicate.NotificationEvent {
+	return predicate.NotificationEvent(sql.FieldEQ(FieldHandlerDeduplicationHash, v))
+}
+
 // NamespaceEQ applies the EQ predicate on the "namespace" field.
 func NamespaceEQ(v string) predicate.NotificationEvent {
 	return predicate.NotificationEvent(sql.FieldEQ(FieldNamespace, v))
@@ -349,6 +354,81 @@ func PayloadEqualFold(v string) predicate.NotificationEvent {
 // PayloadContainsFold applies the ContainsFold predicate on the "payload" field.
 func PayloadContainsFold(v string) predicate.NotificationEvent {
 	return predicate.NotificationEvent(sql.FieldContainsFold(FieldPayload, v))
+}
+
+// HandlerDeduplicationHashEQ applies the EQ predicate on the "handler_deduplication_hash" field.
+func HandlerDeduplicationHashEQ(v string) predicate.NotificationEvent {
+	return predicate.NotificationEvent(sql.FieldEQ(FieldHandlerDeduplicationHash, v))
+}
+
+// HandlerDeduplicationHashNEQ applies the NEQ predicate on the "handler_deduplication_hash" field.
+func HandlerDeduplicationHashNEQ(v string) predicate.NotificationEvent {
+	return predicate.NotificationEvent(sql.FieldNEQ(FieldHandlerDeduplicationHash, v))
+}
+
+// HandlerDeduplicationHashIn applies the In predicate on the "handler_deduplication_hash" field.
+func HandlerDeduplicationHashIn(vs ...string) predicate.NotificationEvent {
+	return predicate.NotificationEvent(sql.FieldIn(FieldHandlerDeduplicationHash, vs...))
+}
+
+// HandlerDeduplicationHashNotIn applies the NotIn predicate on the "handler_deduplication_hash" field.
+func HandlerDeduplicationHashNotIn(vs ...string) predicate.NotificationEvent {
+	return predicate.NotificationEvent(sql.FieldNotIn(FieldHandlerDeduplicationHash, vs...))
+}
+
+// HandlerDeduplicationHashGT applies the GT predicate on the "handler_deduplication_hash" field.
+func HandlerDeduplicationHashGT(v string) predicate.NotificationEvent {
+	return predicate.NotificationEvent(sql.FieldGT(FieldHandlerDeduplicationHash, v))
+}
+
+// HandlerDeduplicationHashGTE applies the GTE predicate on the "handler_deduplication_hash" field.
+func HandlerDeduplicationHashGTE(v string) predicate.NotificationEvent {
+	return predicate.NotificationEvent(sql.FieldGTE(FieldHandlerDeduplicationHash, v))
+}
+
+// HandlerDeduplicationHashLT applies the LT predicate on the "handler_deduplication_hash" field.
+func HandlerDeduplicationHashLT(v string) predicate.NotificationEvent {
+	return predicate.NotificationEvent(sql.FieldLT(FieldHandlerDeduplicationHash, v))
+}
+
+// HandlerDeduplicationHashLTE applies the LTE predicate on the "handler_deduplication_hash" field.
+func HandlerDeduplicationHashLTE(v string) predicate.NotificationEvent {
+	return predicate.NotificationEvent(sql.FieldLTE(FieldHandlerDeduplicationHash, v))
+}
+
+// HandlerDeduplicationHashContains applies the Contains predicate on the "handler_deduplication_hash" field.
+func HandlerDeduplicationHashContains(v string) predicate.NotificationEvent {
+	return predicate.NotificationEvent(sql.FieldContains(FieldHandlerDeduplicationHash, v))
+}
+
+// HandlerDeduplicationHashHasPrefix applies the HasPrefix predicate on the "handler_deduplication_hash" field.
+func HandlerDeduplicationHashHasPrefix(v string) predicate.NotificationEvent {
+	return predicate.NotificationEvent(sql.FieldHasPrefix(FieldHandlerDeduplicationHash, v))
+}
+
+// HandlerDeduplicationHashHasSuffix applies the HasSuffix predicate on the "handler_deduplication_hash" field.
+func HandlerDeduplicationHashHasSuffix(v string) predicate.NotificationEvent {
+	return predicate.NotificationEvent(sql.FieldHasSuffix(FieldHandlerDeduplicationHash, v))
+}
+
+// HandlerDeduplicationHashIsNil applies the IsNil predicate on the "handler_deduplication_hash" field.
+func HandlerDeduplicationHashIsNil() predicate.NotificationEvent {
+	return predicate.NotificationEvent(sql.FieldIsNull(FieldHandlerDeduplicationHash))
+}
+
+// HandlerDeduplicationHashNotNil applies the NotNil predicate on the "handler_deduplication_hash" field.
+func HandlerDeduplicationHashNotNil() predicate.NotificationEvent {
+	return predicate.NotificationEvent(sql.FieldNotNull(FieldHandlerDeduplicationHash))
+}
+
+// HandlerDeduplicationHashEqualFold applies the EqualFold predicate on the "handler_deduplication_hash" field.
+func HandlerDeduplicationHashEqualFold(v string) predicate.NotificationEvent {
+	return predicate.NotificationEvent(sql.FieldEqualFold(FieldHandlerDeduplicationHash, v))
+}
+
+// HandlerDeduplicationHashContainsFold applies the ContainsFold predicate on the "handler_deduplication_hash" field.
+func HandlerDeduplicationHashContainsFold(v string) predicate.NotificationEvent {
+	return predicate.NotificationEvent(sql.FieldContainsFold(FieldHandlerDeduplicationHash, v))
 }
 
 // HasDeliveryStatuses applies the HasEdge predicate on the "delivery_statuses" edge.

@@ -6189,22 +6189,23 @@ func (m *NotificationChannelMutation) ResetEdge(name string) error {
 // NotificationEventMutation represents an operation that mutates the NotificationEvent nodes in the graph.
 type NotificationEventMutation struct {
 	config
-	op                       Op
-	typ                      string
-	id                       *string
-	namespace                *string
-	created_at               *time.Time
-	_type                    *notification.EventType
-	payload                  *string
-	clearedFields            map[string]struct{}
-	delivery_statuses        map[string]struct{}
-	removeddelivery_statuses map[string]struct{}
-	cleareddelivery_statuses bool
-	rules                    *string
-	clearedrules             bool
-	done                     bool
-	oldValue                 func(context.Context) (*NotificationEvent, error)
-	predicates               []predicate.NotificationEvent
+	op                         Op
+	typ                        string
+	id                         *string
+	namespace                  *string
+	created_at                 *time.Time
+	_type                      *notification.EventType
+	payload                    *string
+	handler_deduplication_hash *string
+	clearedFields              map[string]struct{}
+	delivery_statuses          map[string]struct{}
+	removeddelivery_statuses   map[string]struct{}
+	cleareddelivery_statuses   bool
+	rules                      *string
+	clearedrules               bool
+	done                       bool
+	oldValue                   func(context.Context) (*NotificationEvent, error)
+	predicates                 []predicate.NotificationEvent
 }
 
 var _ ent.Mutation = (*NotificationEventMutation)(nil)
@@ -6491,6 +6492,55 @@ func (m *NotificationEventMutation) ResetPayload() {
 	m.payload = nil
 }
 
+// SetHandlerDeduplicationHash sets the "handler_deduplication_hash" field.
+func (m *NotificationEventMutation) SetHandlerDeduplicationHash(s string) {
+	m.handler_deduplication_hash = &s
+}
+
+// HandlerDeduplicationHash returns the value of the "handler_deduplication_hash" field in the mutation.
+func (m *NotificationEventMutation) HandlerDeduplicationHash() (r string, exists bool) {
+	v := m.handler_deduplication_hash
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldHandlerDeduplicationHash returns the old "handler_deduplication_hash" field's value of the NotificationEvent entity.
+// If the NotificationEvent object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *NotificationEventMutation) OldHandlerDeduplicationHash(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldHandlerDeduplicationHash is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldHandlerDeduplicationHash requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldHandlerDeduplicationHash: %w", err)
+	}
+	return oldValue.HandlerDeduplicationHash, nil
+}
+
+// ClearHandlerDeduplicationHash clears the value of the "handler_deduplication_hash" field.
+func (m *NotificationEventMutation) ClearHandlerDeduplicationHash() {
+	m.handler_deduplication_hash = nil
+	m.clearedFields[notificationevent.FieldHandlerDeduplicationHash] = struct{}{}
+}
+
+// HandlerDeduplicationHashCleared returns if the "handler_deduplication_hash" field was cleared in this mutation.
+func (m *NotificationEventMutation) HandlerDeduplicationHashCleared() bool {
+	_, ok := m.clearedFields[notificationevent.FieldHandlerDeduplicationHash]
+	return ok
+}
+
+// ResetHandlerDeduplicationHash resets all changes to the "handler_deduplication_hash" field.
+func (m *NotificationEventMutation) ResetHandlerDeduplicationHash() {
+	m.handler_deduplication_hash = nil
+	delete(m.clearedFields, notificationevent.FieldHandlerDeduplicationHash)
+}
+
 // AddDeliveryStatusIDs adds the "delivery_statuses" edge to the NotificationEventDeliveryStatus entity by ids.
 func (m *NotificationEventMutation) AddDeliveryStatusIDs(ids ...string) {
 	if m.delivery_statuses == nil {
@@ -6619,7 +6669,7 @@ func (m *NotificationEventMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *NotificationEventMutation) Fields() []string {
-	fields := make([]string, 0, 5)
+	fields := make([]string, 0, 6)
 	if m.namespace != nil {
 		fields = append(fields, notificationevent.FieldNamespace)
 	}
@@ -6634,6 +6684,9 @@ func (m *NotificationEventMutation) Fields() []string {
 	}
 	if m.payload != nil {
 		fields = append(fields, notificationevent.FieldPayload)
+	}
+	if m.handler_deduplication_hash != nil {
+		fields = append(fields, notificationevent.FieldHandlerDeduplicationHash)
 	}
 	return fields
 }
@@ -6653,6 +6706,8 @@ func (m *NotificationEventMutation) Field(name string) (ent.Value, bool) {
 		return m.RuleID()
 	case notificationevent.FieldPayload:
 		return m.Payload()
+	case notificationevent.FieldHandlerDeduplicationHash:
+		return m.HandlerDeduplicationHash()
 	}
 	return nil, false
 }
@@ -6672,6 +6727,8 @@ func (m *NotificationEventMutation) OldField(ctx context.Context, name string) (
 		return m.OldRuleID(ctx)
 	case notificationevent.FieldPayload:
 		return m.OldPayload(ctx)
+	case notificationevent.FieldHandlerDeduplicationHash:
+		return m.OldHandlerDeduplicationHash(ctx)
 	}
 	return nil, fmt.Errorf("unknown NotificationEvent field %s", name)
 }
@@ -6716,6 +6773,13 @@ func (m *NotificationEventMutation) SetField(name string, value ent.Value) error
 		}
 		m.SetPayload(v)
 		return nil
+	case notificationevent.FieldHandlerDeduplicationHash:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetHandlerDeduplicationHash(v)
+		return nil
 	}
 	return fmt.Errorf("unknown NotificationEvent field %s", name)
 }
@@ -6745,7 +6809,11 @@ func (m *NotificationEventMutation) AddField(name string, value ent.Value) error
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *NotificationEventMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(notificationevent.FieldHandlerDeduplicationHash) {
+		fields = append(fields, notificationevent.FieldHandlerDeduplicationHash)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -6758,6 +6826,11 @@ func (m *NotificationEventMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *NotificationEventMutation) ClearField(name string) error {
+	switch name {
+	case notificationevent.FieldHandlerDeduplicationHash:
+		m.ClearHandlerDeduplicationHash()
+		return nil
+	}
 	return fmt.Errorf("unknown NotificationEvent nullable field %s", name)
 }
 
@@ -6779,6 +6852,9 @@ func (m *NotificationEventMutation) ResetField(name string) error {
 		return nil
 	case notificationevent.FieldPayload:
 		m.ResetPayload()
+		return nil
+	case notificationevent.FieldHandlerDeduplicationHash:
+		m.ResetHandlerDeduplicationHash()
 		return nil
 	}
 	return fmt.Errorf("unknown NotificationEvent field %s", name)
